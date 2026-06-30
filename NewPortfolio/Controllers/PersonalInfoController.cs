@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NewPortfolio.Data;
 using NewPortfolio.Entities;
@@ -6,6 +7,7 @@ using NewPortfolio.Models;
 
 namespace NewPortfolio.Controllers
 {
+    [Authorize]
     public class PersonalInfoController : Controller
     {
         private readonly ApplicationDbContext _context;
