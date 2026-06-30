@@ -1,0 +1,26 @@
+﻿@model NewPortfolio.Entities.Education
+
+<h1>Edit Education Info</h1>
+
+<form asp-action="Edit" method="post">
+
+    <input asp-for="Id" type="hidden" />
+
+    <div>
+        <label>Subject</label>
+        <input asp-for="Subject" />
+    </div>
+
+    <div>
+        <label>Passing Year</label>
+        <input asp-for="PassingYear" />
+    </div>
+
+    <div>
+        <label>Institute Name</label>
+        <input asp-for="InstituteName" />
+    </div>
+
+    <input type="submit" value="Save" />
+
+</form>

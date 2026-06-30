@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NewPortfolio.Data;
 using NewPortfolio.Entities;
 using NewPortfolio.Models;
-using System.Diagnostics.Contracts;
 
 namespace NewPortfolio.Controllers
 {
@@ -15,6 +13,7 @@ namespace NewPortfolio.Controllers
         {
             _context = context;
         }
+
         public async Task<IActionResult> Index()
         {
             var Skill = await _context.Skills.ToListAsync();
@@ -28,16 +27,19 @@ namespace NewPortfolio.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(SkillViewModel model)
         {
-            var skill = new Skill();
             if (ModelState.IsValid)
-            {
-                skill.Name = model.Name;
-                skill.Level = model.Level;
-                skill.Duration = model.Duration;
-            }
+                return View(model);
+
+            var skill = new Skill();
+
+            skill.Name = model.Name;
+            skill.Level = model.Level;
+            skill.Duration = model.Duration;
+
             _context.Skills.Add(skill);
             await _context.SaveChangesAsync();
-            return View(model);
+
+            return RedirectToAction("Index");
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -49,25 +51,21 @@ namespace NewPortfolio.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Skill model)
         {
-            if (ModelState.IsValid)
-            {
-                if (model == null)
-                {
-                    return NotFound();
-                }
-                _context.Skills.Update(model);
-                await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+                return View(model);
 
-                return RedirectToAction(nameof(Index));
-            }
+            _context.Skills.Update(model);
+            await _context.SaveChangesAsync();
 
-
-            return View(model);
+            return RedirectToAction(nameof(Index));
         }
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             var model = await _context.Skills.FindAsync(id);
+
             if (model == null) return NotFound();
+
             return View(model);
         }
         [HttpPost]
@@ -75,8 +73,6 @@ namespace NewPortfolio.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var model = await _context.Skills.FindAsync(id);
-            if (ModelState.IsValid)
-            {
                 if (model == null)
                 {
                     return NotFound();
@@ -85,10 +81,6 @@ namespace NewPortfolio.Controllers
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
-            }
-
-
-            return View(model);
         }
     }
 }

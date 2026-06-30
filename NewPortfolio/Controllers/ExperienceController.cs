@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NewPortfolio.Data;
 using NewPortfolio.Entities;
 using NewPortfolio.Models;
-using System.Diagnostics.Contracts;
 
 namespace NewPortfolio.Controllers
 {
@@ -15,10 +13,11 @@ namespace NewPortfolio.Controllers
         {
             _context = context;
         }
+
         public async Task<IActionResult> Index()
         {
-            var experience = await _context.Experiences.ToListAsync();
-            return View(experience);
+            var Experience = await _context.Experiences.ToListAsync();
+            return View(Experience);
         }
         [HttpGet]
         public IActionResult Create()
@@ -28,17 +27,19 @@ namespace NewPortfolio.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ExperienceViewModel model)
         {
-            var experience = new Experience();
             if (ModelState.IsValid)
-            {
-                experience.JobPosition = model.JobPosition;
-                experience.YearOfExperience = model.YearOfExperience;
-                experience.JoiningDate = model.JoiningDate;
-                experience.Role = model.Role;
-            }
+                return View(model);
+
+            var experience = new Experience();
+
+            experience.JobPosition = model.JobPosition;
+            experience.Role = model.Role;
+            experience.YearOfExperience = model.YearOfExperience;
+
             _context.Experiences.Add(experience);
             await _context.SaveChangesAsync();
-            return View(model);
+
+            return RedirectToAction("Index");
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -50,25 +51,21 @@ namespace NewPortfolio.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Experience model)
         {
-            if (ModelState.IsValid)
-            {
-                if (model == null)
-                {
-                    return NotFound();
-                }
-                _context.Experiences.Update(model);
-                await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+                return View(model);
 
-                return RedirectToAction(nameof(Index));
-            }
+            _context.Experiences.Update(model);
+            await _context.SaveChangesAsync();
 
-
-            return View(model);
+            return RedirectToAction(nameof(Index));
         }
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             var model = await _context.Experiences.FindAsync(id);
+
             if (model == null) return NotFound();
+
             return View(model);
         }
         [HttpPost]
@@ -76,20 +73,14 @@ namespace NewPortfolio.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var model = await _context.Experiences.FindAsync(id);
-            if (ModelState.IsValid)
+            if (model == null)
             {
-                if (model == null)
-                {
-                    return NotFound();
-                }
-                _context.Experiences.Remove(model);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
+            _context.Experiences.Remove(model);
+            await _context.SaveChangesAsync();
 
-
-            return View(model);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

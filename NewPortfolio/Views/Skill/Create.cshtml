@@ -1,0 +1,24 @@
+﻿@model NewPortfolio.Models.SkillViewModel
+
+<h1>Create Skill Info</h1>
+
+<form asp-action="Create" method="post">
+
+    <div>
+        <label>Name</label>
+        <input asp-for="Name" />
+    </div>
+
+    <div>
+        <label>Level</label>
+        <input asp-for="Level" />
+    </div>
+
+    <div>
+        <label>Duration</label>
+        <input asp-for="Duration" />
+    </div>
+
+    <input type="submit" value="Create" />
+
+</form>

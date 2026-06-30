@@ -1,23 +1,29 @@
 ﻿@model NewPortfolio.Models.PersonalInfoViewModel
 
-<h1>Create PersonalInfo</h1>
+<h1>Create Personal Info</h1>
 
-<form method="post" action="Create">
+<form asp-action="Create" method="post">
+
     <div>
-       <label>Name: </label>
-       <input type="text" name="Name" />
+        <label>Name</label>
+        <input asp-for="Name" />
     </div>
-     <div>
-       <label>Phone: </label>
-       <input type="text" name="Phone" />
-    </div>
-     <div>
-       <label>Address: </label>
-       <input type="text" name="Address" />
-    </div>
+
     <div>
-        <label>Email: </label>
-        <input type="text" name="Email" />
+        <label>Phone</label>
+        <input asp-for="Phone" />
     </div>
+
+    <div>
+        <label>Address</label>
+        <input asp-for="Address" />
+    </div>
+
+    <div>
+        <label>Email</label>
+        <input asp-for="Email" />
+    </div>
+
     <input type="submit" value="Create" />
+
 </form>

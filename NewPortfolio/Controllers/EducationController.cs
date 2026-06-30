@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NewPortfolio.Data;
 using NewPortfolio.Entities;
 using NewPortfolio.Models;
-using System.Diagnostics.Contracts;
 
 namespace NewPortfolio.Controllers
 {
@@ -15,10 +13,11 @@ namespace NewPortfolio.Controllers
         {
             _context = context;
         }
+
         public async Task<IActionResult> Index()
         {
-            var education = await _context.Educations.ToListAsync();
-            return View(education);
+            var Education = await _context.Educations.ToListAsync();
+            return View(Education);
         }
         [HttpGet]
         public IActionResult Create()
@@ -28,17 +27,19 @@ namespace NewPortfolio.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(EducationViewModel model)
         {
-            var education = new Education();
             if (ModelState.IsValid)
-            {
-                education.Subject = model.Subject;
-                education.PassingYear = model.PassingYear;
-                education.instituitionName = model.instituitionName;
- 
-            }
+                return View(model);
+
+            var education = new Education();
+
+            education.Subject = model.Subject;
+            education.PassingYear = model.PassingYear;
+            education.InstituteName = model.InstituteName;
+
             _context.Educations.Add(education);
             await _context.SaveChangesAsync();
-            return View(model);
+
+            return RedirectToAction("Index");
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -50,25 +51,21 @@ namespace NewPortfolio.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Education model)
         {
-            if (ModelState.IsValid)
-            {
-                if (model == null)
-                {
-                    return NotFound();
-                }
-                _context.Educations.Update(model);
-                await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+                return View(model);
 
-                return RedirectToAction(nameof(Index));
-            }
+            _context.Educations.Update(model);
+            await _context.SaveChangesAsync();
 
-
-            return View(model);
+            return RedirectToAction(nameof(Index));
         }
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             var model = await _context.Educations.FindAsync(id);
+
             if (model == null) return NotFound();
+
             return View(model);
         }
         [HttpPost]
@@ -76,20 +73,14 @@ namespace NewPortfolio.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var model = await _context.Educations.FindAsync(id);
-            if (ModelState.IsValid)
+            if (model == null)
             {
-                if (model == null)
-                {
-                    return NotFound();
-                }
-                _context.Educations.Remove(model);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
+            _context.Educations.Remove(model);
+            await _context.SaveChangesAsync();
 
-
-            return View(model);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

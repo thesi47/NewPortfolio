@@ -1,0 +1,40 @@
+﻿@model IEnumerable<NewPortfolio.Entities.Experience>
+
+<h1>Experience Info</h1>
+
+<a asp-action="Create">Create</a>
+
+<table>
+
+    <thead>
+        <tr>
+            <th>Job Position</th>
+            <th>Role</th>
+            <th>Joining Date</th>
+            <th>Years of Experience</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.JobPosition</td>
+                <td>@item.Role</td>
+                <td>@item.JoiningDate</td>
+                <td>@item.YearOfExperience</td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

@@ -1,0 +1,29 @@
+﻿@model NewPortfolio.Models.ExperienceViewModel
+
+<h1>Create Experience Info</h1>
+
+<form asp-action="Create" method="post">
+
+    <div>
+        <label>Job Position</label>
+        <input asp-for="JobPosition" />
+    </div>
+
+    <div>
+        <label>Role</label>
+        <input asp-for="Role" />
+    </div>
+
+    <div>
+        <label>Joining Date</label>
+        <input asp-for="JoiningDate" />
+    </div>
+
+    <div>
+        <label>Years of Experience</label>
+        <input asp-for="YearOfExperience" />
+    </div>
+
+    <input type="submit" value="Create" />
+
+</form>

@@ -1,0 +1,38 @@
+﻿@model IEnumerable<NewPortfolio.Entities.Education>
+
+<h1>Education Info</h1>
+
+<a asp-action="Create">Create</a>
+
+<table>
+
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Passing Year</th>
+            <th>Institute Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.Subject</td>
+                <td>@item.PassingYear</td>
+                <td>@item.InstituteName</td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
