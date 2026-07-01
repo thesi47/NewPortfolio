@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 namespace NewPortfolio.Models
 {
     public class RegisterViewModel
-    {
+    {    
         [Required]
         public string Email { get; set; }
         [Required]

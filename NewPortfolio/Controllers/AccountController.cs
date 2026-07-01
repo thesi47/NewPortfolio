@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NewPortfolio.Entities;
 using NewPortfolio.Models;
-
+using System.Security.Claims;
 namespace NewPortfolio.Controllers
 {
     public class AccountController : Controller
@@ -18,14 +18,18 @@ namespace NewPortfolio.Controllers
             _signInManager = signInManager;
         }
 
-        // GET: Account/Register
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var users = _userManager.Users.ToList();
+            return View(users);
+        }
+
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
-
-        // POST: Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
@@ -38,6 +42,8 @@ namespace NewPortfolio.Controllers
                 UserName = model.Email,
                 Email = model.Email
             };
+
+
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -54,15 +60,11 @@ namespace NewPortfolio.Controllers
 
             return View(model);
         }
-
-        // GET: Account/Login
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
-
-        // POST: Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
@@ -85,14 +87,34 @@ namespace NewPortfolio.Controllers
 
             return View(model);
         }
-
-        // POST: Account/Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        public async Task<IActionResult> AssignPermissions(PermissionViewModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.UserId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var existingClaims = await _userManager.GetClaimsAsync(user);
+
+            foreach (var claim in existingClaims.Where(r => r.Type == "Permission"))
+            {
+                await _userManager.RemoveClaimAsync(user, claim);
+            }
+            foreach(var permissions in model.SelectedPermissions)
+            {
+                await _userManager.AddClaimAsync(user, new Claim("Permission", permissions));
+            }
+            return RedirectToAction(nameof(Index));
+
         }
     }
 }

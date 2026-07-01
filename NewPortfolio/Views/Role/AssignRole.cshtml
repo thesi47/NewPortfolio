@@ -1,0 +1,22 @@
+@model NewPortfolio.Models.AssignRoleViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+<h2>Assign Role</h2>
+
+<div>
+    <p><strong>User:</strong> @Model.UserName</p>
+
+    <form asp-action="Assignrole" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="UserId" />
+
+        <div class="form-group">
+            <label asp-for="SelectedRole" class="control-label">Role</label>
+            <select asp-for="SelectedRole" class="form-control" asp-items="new SelectList(Model.Roles)"></select>
+            <span asp-validation-for="SelectedRole" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Assign</button>
+        <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+    </form>
+</div>

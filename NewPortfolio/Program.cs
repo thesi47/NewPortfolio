@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NewPortfolio.Data;
 using NewPortfolio.Entities;
-
+using NewPortfolio.Extensions;
 namespace NewPortfolio
 {
     public class Program
@@ -34,7 +34,18 @@ namespace NewPortfolio
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            // MVC + Razor Pages
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Create", policy =>
+                policy.RequireClaim("Permission", Permission.Create));
+                options.AddPolicy("Edit", policy =>
+                policy.RequireClaim("Permission", Permission.Edit));
+                options.AddPolicy("Delete", policy =>
+                policy.RequireClaim("Permission", Permission.Delete));
+                options.AddPolicy("View", policy =>
+                policy.RequireClaim("Permission", Permission.View));
+            });
+
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
 

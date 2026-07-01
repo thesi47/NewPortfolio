@@ -1,0 +1,41 @@
+@model NewPortfolio.Models.PermissionViewModel
+
+<h2>Assign Permissions</h2>
+
+<form asp-action="AssignPermissions" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <input type="hidden" asp-for="UserId" />
+
+    <div class="mb-3">
+        <label class="form-label">Select Permissions:</label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="SelectedPermissions" value="Create" id="permission-create" />
+            <label class="form-check-label" for="permission-create">
+                Create
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="SelectedPermissions" value="Edit" id="permission-edit" />
+            <label class="form-check-label" for="permission-edit">
+                Edit
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="SelectedPermissions" value="Delete" id="permission-delete" />
+            <label class="form-check-label" for="permission-delete">
+                Delete
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="SelectedPermissions" value="View" id="permission-view" />
+            <label class="form-check-label" for="permission-view">
+                View
+            </label>
+        </div>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Assign Permissions</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
