@@ -20,7 +20,7 @@
                 <td>@(string.IsNullOrEmpty(user.FullName) ? "N/A" : user.FullName)</td>
                 <td>@(user.CreatedDate?.ToString("MM/dd/yyyy HH:mm:ss") ?? "N/A")</td>
                 <td>
-                    <a asp-controller="Role" asp-action="AssignRole" asp-route-id="@model.UserId" class="btn btn-sm btn-info">Assign Role</a>
+                    <a asp-controller="Role" asp-action="AssignRole" asp-route-id="@user.Id" class="btn btn-sm btn-info">Assign Role</a>
                     <a asp-action="AssignPermissions" asp-route-id="@user.Id" class="btn btn-sm btn-info">Assign Permissions</a>
                 </td>
             </tr>

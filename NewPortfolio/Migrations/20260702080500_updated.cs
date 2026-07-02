@@ -5,7 +5,7 @@
 namespace NewPortfolio.Migrations
 {
     /// <inheritdoc />
-    public partial class addedregistration : Migration
+    public partial class updated : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
